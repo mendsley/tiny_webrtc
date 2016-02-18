@@ -1,0 +1,18 @@
+type file
+id webrtc
+version 2015.11.7
+authors
+	https://www.webrtc.org/
+	https://www.opus-codec.org/
+owner
+	Matthew Endsley
+description
+	webrtc+opus VOIP processing
+files
+	lib/ ==> lib/
+	msvc_xp/ ==> msvc_xp/
+	opus_contrib/ ==> opus_contrib/
+	upstream_opus/ ==> upstream_opus/
+	upstream_webrtc/ ==> upstream_webrtc/
+	* ==>
+	!*nupkg*

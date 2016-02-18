@@ -1,0 +1,6 @@
+[submodule "upstream_webrtc"]
+	path = upstream_webrtc
+	url = https://chromium.googlesource.com/external/webrtc
+[submodule "upstream_opus"]
+	path = upstream_opus
+	url = https://git.xiph.org/opus.git
