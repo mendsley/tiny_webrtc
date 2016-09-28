@@ -1,6 +1,6 @@
 type file
 id webrtc
-version 2015.11.7
+version 2015.11.7-a
 authors
 	https://www.webrtc.org/
 	https://www.opus-codec.org/
@@ -11,6 +11,7 @@ description
 files
 	lib/ ==> lib/
 	msvc_xp/ ==> msvc_xp/
+	android/ ==> android/
 	opus_contrib/ ==> opus_contrib/
 	upstream_opus/ ==> upstream_opus/
 	upstream_webrtc/ ==> upstream_webrtc/

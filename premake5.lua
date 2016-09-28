@@ -1,11 +1,12 @@
 require "msvc_xp"
+require "android"
 
 if _ACTION == nil then
 	return
 end
 
 workspace "webrtc"
-	platforms {"x86", "x86_64"}
+	platforms {"x86", "x86_64", "android"}
 	configurations {"Release", "Release-static"}
 
 	location (".build/projects/" .. _ACTION .. "/")
@@ -25,6 +26,7 @@ workspace "webrtc"
 		"Symbols",
 		"Unicode",
 		"FatalWarnings",
+		"C++11",
 	}
 
 	filter "architecture:x86"
@@ -53,6 +55,20 @@ workspace "webrtc"
  			"/wd4310", -- warning C4310: cast truncates constant value
 			"/wd4334", -- warning C4334: 'EXPR' : result of 32-bit shift implicitly converted to 64 bits (was 64-bit shift intended)
 		}
+		
+	filter "platforms:android"
+		androidndkroot (os.getenv("ANDROID_NDKROOT"))
+		androidapilevel (19)
+		toolset "clang"
+		vectorextensions "Default"
+		system "android"
+		architecture "armeabi_v7a"
+		objdir (".build/obj/" .. _ACTION .. "/%{cfg.configuration}/")
+		targetdir ("lib/" .. _ACTION .. "/%{cfg.architecture}")
+		buildoptions {
+			"-mfpu=neon",
+		}
+
 	filter {}
 
 project "webrtc"
@@ -67,6 +83,7 @@ project "webrtc"
 	files {
 		"upstream_webrtc/webrtc/common_types.*",
 		"upstream_webrtc/webrtc/base/checks.*",
+		"upstream_webrtc/webrtc/base/event.*",
 		"upstream_webrtc/webrtc/base/platform_file*",
 		"upstream_webrtc/webrtc/base/platform_thread*",
 		"upstream_webrtc/webrtc/base/thread_checker**",
@@ -132,6 +149,41 @@ project "webrtc"
 			"upstream_webrtc/webrtc/common_audio/**_armv7.S",
 			"upstream_webrtc/webrtc/common_audio/**_mips.c",
 		}
+		
+	filter "system:android"
+		defines {
+			"WEBRTC_ANDROID",
+			"WEBRTC_POSIX",
+			"WEBRTC_LINUX",
+			"WEBRTC_NS_FLOAT",
+			"WEBRTC_HAS_NEON",
+			"WEBRTC_CLOCK_TYPE_REALTIME",
+		}
+		
+		includedirs {
+			(os.getenv("ANDROID_NDKROOT").."/sources/android/cpufeatures"),
+		}
+
+		excludes {
+			--"upstream_webrtc/webrtc/system_wrappers/**_posix.cc",
+			"upstream_webrtc/webrtc/system_wrappers/**_mac.cc",
+			"upstream_webrtc/webrtc/system_wrappers/**_win.cc",
+			--"upstream_webrtc/webrtc/system_wrappers/**_android.c",
+			"upstream_webrtc/webrtc/modules/audio_processing/**_mips.c",
+			--"upstream_webrtc/webrtc/modules/audio_processing/**_neon.c",
+			"upstream_webrtc/webrtc/modules/audio_processing/**_unittest.cc",
+			"upstream_webrtc/webrtc/modules/audio_processing/**_test.cc",
+			"upstream_webrtc/webrtc/modules/audio_processing/**_sse2.c",
+			"upstream_webrtc/webrtc/modules/audio_processing/intelligibility/test/**",
+			"upstream_webrtc/webrtc/modules/audio_processing/transient/test/**",
+			--"upstream_webrtc/webrtc/common_audio/**_neon.c",
+			--"upstream_webrtc/webrtc/common_audio/**_neon.cc",
+			"upstream_webrtc/webrtc/common_audio/**_openmax.cc",
+			"upstream_webrtc/webrtc/common_audio/**_sse.cc",
+			"upstream_webrtc/webrtc/common_audio/**_arm.S",
+			--"upstream_webrtc/webrtc/common_audio/**_armv7.S",
+			"upstream_webrtc/webrtc/common_audio/**_mips.c",
+		}
 
 	filter {}
 
@@ -154,6 +206,7 @@ project "opus"
 		"upstream_opus/src/**",
 	}
 	excludes {
+		"upstream_opus/celt/*_demo.c",
 		"upstream_opus/src/*_demo.c",
 		"upstream_opus/src/mlp_train.c",
 		"upstream_opus/src/opus_compare.c",
@@ -164,6 +217,19 @@ project "opus"
 			-- opus
 			"USE_ALLOCA",
 			"HAVE_CONFIG_H",
+		}
+		
+	filter "system:android"
+		defines {
+			"USE_ALLOCA",
+			"HAVE_CONFIG_H",
+			"HAVE_LRINT=1",
+			"HAVE_LRINTF=1",
+			--"OPUS_HAVE_RTCD",
+			--"OPUS_ARM_ASM",
+		}
+		files {
+			--"upstream_opus/celt/arm/*"
 		}
 
 	filter {}
