@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
     <id>webrtc</id>
-    <version>2015.11.7-a</version>
+    <version>2015.11.7-b</version>
     <authors>https://www.webrtc.org/;https://www.opus-codec.org/</authors>
     <owners>Matthew Endsley</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
