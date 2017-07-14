@@ -23,18 +23,19 @@ workspace "webrtc"
 		"NoMinimalRebuild",
 		"NoIncrementalLink",
 		"NoPCH",
-		"Symbols",
-		"Unicode",
 		"FatalWarnings",
 		"C++11",
 	}
+
+	symbols "On"
+	characterset "Unicode"
 
 	filter "architecture:x86"
 		vectorextensions "SSE2"
 
 	filter "Release-static"
 		targetsuffix "-static"
-		flags "StaticRuntime"
+		--flags "StaticRuntime"
 
 	filter {"action:vs*"}
 		defines {
