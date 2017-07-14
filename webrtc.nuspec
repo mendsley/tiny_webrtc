@@ -9,6 +9,12 @@
     <description>webrtc+opus VOIP processing</description>
   </metadata>
   <files>
-	<file src="**" target="." />
+    <file src="*" target="." />
+	<file src="lib/**" target="." />
+	<file src="msvc_xp/**" target="." />
+	<file src="android/**" target="." />
+	<file src="opus_contrib/**" target="." />
+	<file src="upstream_opus/**" target="." />
+	<file src="upstream_webrtc/**" target="." />
   </files>
 </package>
